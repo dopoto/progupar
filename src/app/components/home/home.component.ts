@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../services/auth-service/auth-service.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -14,7 +14,6 @@ export class HomeComponent implements OnInit {
   }
 
   login(){
-    debugger;
     this.authService.login();
   }
 }

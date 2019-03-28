@@ -1,0 +1,17 @@
+<p>
+  home works.
+
+  <button
+  class="btn btn-primary btn-margin"
+  *ngIf="!authService.isAuthenticated()"
+  (click)="authService.login()">
+    Log In
+</button>
+
+<button
+  class="btn btn-primary btn-margin"
+  *ngIf="authService.isAuthenticated()"
+  (click)="authService.logout()">
+    Log Out
+</button>
+</p>
