@@ -40,6 +40,7 @@ export class AuthService {
     // ...
     public handleAuthentication(): void {
       this.auth0.parseHash((err, authResult) => {
+        debugger;
         if (authResult && authResult.accessToken && authResult.idToken) {
           window.location.hash = '';
           this.localLogin(authResult);

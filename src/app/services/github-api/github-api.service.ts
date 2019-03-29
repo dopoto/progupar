@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -17,9 +17,11 @@ export class GithubApiService {
   submitChange(userName: string, repoName: string) {    
     this.getMasterSha$(userName, repoName, "master").subscribe((data) => {
       const sha = data.object.sha;
-      const newBranchName = new Date().getTime().toLocaleString();
-      this.createBranch$(userName, repoName, sha, newBranchName).subscribe((createBranchData) => {
-        debugger;
+      const newBranchName = new Date().getTime().toString();
+      debugger;
+      this.createBranch$(userName, repoName, sha, newBranchName).subscribe((createdBranchData) => {
+        // commit file
+        // create PR
       });
     });
   }
@@ -36,12 +38,14 @@ export class GithubApiService {
 
   createBranch$(userName: string, repoName: string, shaToBranchFrom: string, newBranchName: string): Observable<any> {
     const endPoint = `https://api.github.com/repos/${userName}/${repoName}/git/refs`;
+    const headers = new HttpHeaders({
+      Authorization: `token TODO USE PROUPAR TOKEN`
+    });
     const postData = {
       "ref": `refs/heads/${newBranchName}`,
       "sha": shaToBranchFrom
     }
-    // TODO Authenticate
-    return this.http.post(endPoint, postData);
+    return this.http.post(endPoint, postData, { headers });
   }
 
   /*
