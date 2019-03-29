@@ -7,6 +7,8 @@ import * as auth0 from 'auth0-js';
 })
 export class AuthService {
 
+  userProfile: any;
+
   private _idToken: string;
   private _accessToken: string;
   private _expiresAt: number;
@@ -16,7 +18,7 @@ export class AuthService {
     domain: 'progupar.eu.auth0.com',
     responseType: 'token id_token',
     redirectUri: 'http://localhost:4202/callback',
-    scope: 'openid'
+    scope: 'openid profile'
   });
 
   constructor(public router: Router) {
@@ -40,7 +42,6 @@ export class AuthService {
     // ...
     public handleAuthentication(): void {
       this.auth0.parseHash((err, authResult) => {
-        debugger;
         if (authResult && authResult.accessToken && authResult.idToken) {
           window.location.hash = '';
           this.localLogin(authResult);
@@ -58,6 +59,20 @@ export class AuthService {
       this._accessToken = authResult.accessToken;
       this._idToken = authResult.idToken;
       this._expiresAt = expiresAt;
+    }
+
+    public getProfile(cb): void {
+      if (!this._accessToken) {
+        throw new Error('Access Token must exist to fetch profile');
+      }
+    
+      const self = this;
+      this.auth0.client.userInfo(this._accessToken, (err, profile) => {
+        if (profile) {
+          self.userProfile = profile;
+        }
+        cb(err, profile);
+      });
     }
   
     public renewTokens(): void {

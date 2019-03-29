@@ -11,6 +11,13 @@
 <button
   class="btn btn-primary btn-margin"
   *ngIf="authService.isAuthenticated()"
+  (click)="getProfile()">
+    gET PROFILE
+</button>
+
+<button
+  class="btn btn-primary btn-margin"
+  *ngIf="authService.isAuthenticated()"
   (click)="authService.logout()">
     Log Out
 </button>
