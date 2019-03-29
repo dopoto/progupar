@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import * as auth0 from 'auth0-js';
 import { GitHubProfile } from 'src/app/models/gitHubProfile';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +24,7 @@ export class AuthService {
     scope: 'openid profile'
   });
 
-  constructor(public router: Router) {
+  constructor(public router: Router, private httpClient: HttpClient) {
     this._idToken = '';
     this._accessToken = '';
     this._expiresAt = 0;
@@ -49,6 +51,11 @@ export class AuthService {
         this.getProfile((err, profile) => {
           this.userProfile = profile;
         });
+
+        this.getFullProfile$().subscribe((data) => {
+          debugger;
+        });
+
         this.router.navigate(['/home']);
       } else if (err) {
         this.router.navigate(['/home']);
@@ -77,6 +84,13 @@ export class AuthService {
       }
       cb(err, profile);
     });
+  }
+// TODO Research - https://auth0.com/docs/connections/calling-an-external-idp-api > WebTasks
+  public getFullProfile$(): Observable<any> {
+    const url = 'https://progupar.eu.auth0.com/oauth/token';
+    const body = '{"client_id":"psM3ZAqoQ603xCAqLzAaG6mZHMeKrWAz","client_secret":"UaveuyXg2mGQYLBP1tgFvBydGVTmBeofw65KBpmx7HASGWtjjxINCMIaLzyUws-n","audience":"https://progupar.eu.auth0.com/api/v2/","grant_type":"client_credentials"}';
+    const headers = new HttpHeaders({ 'content-type': 'application/json' });
+    return this.httpClient.post(url, body, { headers });
   }
 
   public renewTokens(): void {
