@@ -9,10 +9,10 @@ export class GithubApiService {
 
   constructor(private http: HttpClient) {}
 
-  getUser(username: string) {
-    const endPoint = `https://api.github.com/users/${username}`;
-    this.http.get(endPoint).subscribe(data => {});
-  }
+  // getUser(username: string) {
+  //   const endPoint = `https://api.github.com/users/${username}`;
+  //   this.http.get(endPoint).subscribe(data => {});
+  // }
 
   submitChange(userName: string, repoName: string) {    
     this.getMasterSha$(userName, repoName, "master").subscribe((data) => {
