@@ -8,7 +8,8 @@ const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'callback', component: CallbackComponent },
   { path: 'home', component: HomeComponent },
-  { path: 'logout', component: LogoutComponent }
+  { path: 'logout', component: LogoutComponent },
+  { path: '**', redirectTo: '' }
 ];
 
 @NgModule({
