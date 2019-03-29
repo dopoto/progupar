@@ -23,4 +23,8 @@ export class HomeComponent implements OnInit {
     this.githubApiService.getUser("dopoto");
     return "";
   }
+
+  submitChange() {
+    this.githubApiService.submitChange("dopoto", "progupar");
+  }
 }
